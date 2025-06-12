@@ -16,7 +16,6 @@ local cache_paths
 local cache_keyfinder
 local cache_keyfinder_path
 local cache_strip
-local cache_key
 
 -- Initialize the module with configuration
 -- @param config table Configuration table containing:
@@ -107,7 +106,7 @@ local function purge_multi(input_uri)
 
     for _, cache_path in ipairs(cache_paths) do
       local cmd = cache_keyfinder_path .. cache_keyfinder .. " "..cache_path.." "..suffix.." -d"
-      ngx.log(ngx.INFO, "Executing command: ", cmd)
+      ngx.log(ngx.DEBUG, "Executing command: ", cmd)
       local ok, err = execute_shell_command(cmd)
       if not ok then
         ngx.log(ngx.ERR, "Failed to purge cache path: ", cache_path, " Error: ", err)
@@ -147,9 +146,9 @@ function _M.purge_cache(input_uri, cache_purge_type)
   end
 
   local cache_key_modified = uri:gsub(input_uri:gsub("%p", "%%%1"), uri)
-  ngx.log(ngx.INFO, "Input URI: ", input_uri)
-  ngx.log(ngx.INFO, "Cache key modified: ", cache_key_modified)
-  ngx.log(ngx.INFO, "SUB URI: ", string.sub(input_uri, -1))
+  ngx.log(ngx.DEBUG, "Input URI: ", input_uri)
+  ngx.log(ngx.DEBUG, "Cache key modified: ", cache_key_modified)
+  ngx.log(ngx.DEBUG, "SUB URI: ", string.sub(input_uri, -1))
 
   if string.sub(input_uri, -1) == '*' then
     if cache_purge_type == 'all' then
