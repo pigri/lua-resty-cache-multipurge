@@ -1,0 +1,13 @@
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nginx.conf:/usr/local/openresty/nginx/conf/nginx.conf
+      - ./lib/resty/cache_multipurge.lua:/usr/local/openresty/lualib/resty/cache_multipurge.lua
+      - ./volumes/cache:/tmp/cache
+    networks:
+      - default
